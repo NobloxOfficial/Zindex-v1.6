@@ -1,0 +1,306 @@
+-- Function to create the notifier GUI
+local function createNotifier(message)
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "Notifier"
+    screenGui.Parent = game.CoreGui
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 250, 0, 75)
+    frame.Position = UDim2.new(1, -260, 1, -85)
+    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    frame.BorderSizePixel = 2
+    frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    frame.Parent = screenGui
+
+    local frameCorner = Instance.new("UICorner")
+    frameCorner.CornerRadius = UDim.new(0, 5)
+    frameCorner.Parent = frame
+
+    local frameGradient = Instance.new("UIGradient")
+    frameGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+    }
+    frameGradient.Parent = frame
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -40, 0, 50)
+    label.Position = UDim2.new(0, 20, 0, 20)
+    label.BackgroundTransparency = 1
+    label.Text = message
+    label.TextColor3 = Color3.fromRGB(0, 255, 0)
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 18
+    label.TextWrapped = true
+    label.Parent = frame
+
+    delay(5, function()
+        screenGui:Destroy()
+    end)
+end
+
+-- Function to create the main GUI
+local function createMainGUI()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "REHub"
+    screenGui.Parent = game.CoreGui
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 700, 0, 500)
+    frame.Position = UDim2.new(0.5, -350, 0.5, -250)
+    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    frame.BorderSizePixel = 2
+    frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    frame.Active = true
+    frame.Draggable = true
+    frame.Parent = screenGui
+
+    local frameCorner = Instance.new("UICorner")
+    frameCorner.CornerRadius = UDim.new(0, 15)
+    frameCorner.Parent = frame
+
+    local frameGradient = Instance.new("UIGradient")
+    frameGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+    }
+    frameGradient.Parent = frame
+
+    local scrollingFrame = Instance.new("ScrollingFrame")
+    scrollingFrame.Size = UDim2.new(1, 0, 1, -60)
+    scrollingFrame.Position = UDim2.new(0, 0, 0, 60)
+    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 600)
+    scrollingFrame.ScrollBarThickness = 10
+    scrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    scrollingFrame.BorderSizePixel = 2
+    scrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    scrollingFrame.Parent = frame
+
+    local scrollingFrameCorner = Instance.new("UICorner")
+    scrollingFrameCorner.CornerRadius = UDim.new(0, 10)
+    scrollingFrameCorner.Parent = scrollingFrame
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 0, 60)
+    label.Position = UDim2.new(0, 0, 0, 0)
+    label.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    label.BorderSizePixel = 2
+    label.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    label.Text = "Z I N D E X  V1  |  https://youtube.com/@RobloxExecuted"
+    label.TextColor3 = Color3.fromRGB(0, 255, 0)
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 28
+    label.Parent = frame
+
+    local labelCorner = Instance.new("UICorner")
+    labelCorner.CornerRadius = UDim.new(0, 10)
+    labelCorner.Parent = label
+
+    local function createButton(name, position, script)
+        local button = Instance.new("TextButton")
+        button.Size = UDim2.new(1, -20, 0, 50)
+        button.Position = UDim2.new(0, 10, 0, position)
+        button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        button.BorderSizePixel = 2
+        button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        button.Text = name
+        button.TextColor3 = Color3.fromRGB(0, 255, 0)
+        button.Font = Enum.Font.Gotham
+        button.TextSize = 22
+        button.MouseButton1Click:Connect(function()
+            loadstring(game:HttpGet(script))()
+        end)
+        button.Parent = scrollingFrame
+
+        local buttonCorner = Instance.new("UICorner")
+        buttonCorner.CornerRadius = UDim.new(0, 10)
+        buttonCorner.Parent = button
+    end
+
+    createButton("Arsenal", 10, "https://raw.githubusercontent.com/tbao143/thaibao/main/TbaoHubArsenal")
+    createButton("Doors Floor 1 and 2 V1", 70, "https://raw.githubusercontent.com/KINGHUB01/BlackKing-obf/main/Doors%20Blackking%20And%20BobHub")
+    createButton("Doors Floor 1 and 2 V2", 130, "https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/main/scripts/Loader.lua")
+    createButton("Serenade HUB", 190, "https://raw.githubusercontent.com/4xdhondiscord/SerenadeHub/main/Serenade")
+    createButton("BladeBall Auto PARRY GUI", 250, "https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/main/scripts/autoparry.lua")
+    createButton("INF YIELD V6", 310, "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source")
+    createButton("DARK DEX V3", 370, "https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua")
+    createButton("Blox Fruits Min Hub V2", 430, "https://raw.githubusercontent.com/Basicallyy/Basicallyy/main/MinGamingV4.lua")
+    createButton("PET SIM 99 Nut Hub V2", 490, "https://raw.githubusercontent.com/Qrto1/working/main/pc")
+    createButton("RIVALS AIMBOT", 550, "https://scriptblox.com/raw/UPD-RIVALS-FREE-GUI-16266")
+    createButton("Pressure", 610, "https://raw.githubusercontent.com/NobloxOfficial/PRESSURE-Roblox/refs/heads/main/Pressure%20script%20for%20Z%20I%20N%20D%20E%20X")
+    createButton("Jailbreak ProjectAuto V5", 670, "http://scripts.projectauto.xyz/AutoRobV5")
+
+    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 900)
+
+    local TweenService = game:GetService("TweenService")
+
+    local function animateFrameVisibility(show)
+        local tweenInfo = TweenInfo.new(
+            0.5,
+            Enum.EasingStyle.Quad,
+            Enum.EasingDirection.InOut,
+            0,
+            false,
+            0
+        )
+
+        local goalPosition = show and UDim2.new(0.5, -350, 0.5, -250) or UDim2.new(0.5, -350, 0.5, 500)
+        local goalSize = show and UDim2.new(0, 700, 0, 500) or UDim2.new(0, 700, 0, 0)
+
+        local tween = TweenService:Create(frame, tweenInfo, {Position = goalPosition, Size = goalSize})
+        tween:Play()
+        tween.Completed:Connect(function()
+            if not show then
+                frame.Visible = false
+            end
+        end)
+    end
+
+    local function toggleVisibility()
+        if frame.Visible then
+            animateFrameVisibility(false)
+        else
+            frame.Visible = true
+            animateFrameVisibility(true)
+        end
+    end
+
+    -- Create toggle button outside the main frame
+    local toggleButton = Instance.new("TextButton")
+    toggleButton.Size = UDim2.new(0, 150, 0, 50)
+    toggleButton.Position = UDim2.new(1, -160, 0.5, -25)  -- Adjust position to be outside of the frame
+    toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    toggleButton.Text = "Toggle GUI"
+    toggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    toggleButton.Font = Enum.Font.GothamBold
+    toggleButton.TextSize = 24
+    toggleButton.Parent = screenGui  -- Parent to ScreenGui, not frame
+
+    toggleButton.MouseButton1Click:Connect(toggleVisibility)
+end
+
+-- Function to create the key entry GUI
+local function createKeyEntryGUI()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "KeyEntry"
+    screenGui.Parent = game.CoreGui
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 400, 0, 350)
+    frame.Position = UDim2.new(0.5, -200, 0.5, -175)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark grey background
+    frame.BorderSizePixel = 0
+    frame.BackgroundTransparency = 0.1
+    frame.Parent = screenGui
+
+    local frameCorner = Instance.new("UICorner")
+    frameCorner.CornerRadius = UDim.new(0, 20)
+    frameCorner.Parent = frame
+
+    local uiStroke = Instance.new("UIStroke")
+    uiStroke.Color = Color3.fromRGB(255, 255, 255) -- White border
+    uiStroke.Thickness = 2
+    uiStroke.Parent = frame
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, 0, 0, 60)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundColor3 = Color3.fromRGB(40, 40, 40) -- Slightly lighter grey
+    titleLabel.BackgroundTransparency = 1 -- Fully transparent background
+    titleLabel.Text = "Enter Access Key"
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 24
+    titleLabel.TextStrokeTransparency = 0.5
+    titleLabel.TextWrapped = true
+    titleLabel.Parent = frame
+
+    local textBox = Instance.new("TextBox")
+    textBox.Size = UDim2.new(0, 300, 0, 50)
+    textBox.Position = UDim2.new(0.5, -150, 0.3, 0)
+    textBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60) -- Grey background
+    textBox.Text = ""
+    textBox.PlaceholderText = "Enter Key Here"
+    textBox.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+    textBox.Font = Enum.Font.Gotham
+    textBox.TextSize = 24
+    textBox.TextStrokeTransparency = 0.5
+    textBox.TextWrapped = true
+    textBox.Parent = frame
+
+    local textBoxCorner = Instance.new("UICorner")
+    textBoxCorner.CornerRadius = UDim.new(0, 12)
+    textBoxCorner.Parent = textBox
+
+    local submitButton = Instance.new("TextButton")
+    submitButton.Size = UDim2.new(0, 120, 0, 50)
+    submitButton.Position = UDim2.new(0.5, -130, 0.55, 0)
+    submitButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0) -- Green background
+    submitButton.Text = "Submit"
+    submitButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+    submitButton.Font = Enum.Font.GothamBold
+    submitButton.TextSize = 24
+    submitButton.TextStrokeTransparency = 0.5
+    submitButton.Parent = frame
+
+    local submitButtonCorner = Instance.new("UICorner")
+    submitButtonCorner.CornerRadius = UDim.new(0, 12)
+    submitButtonCorner.Parent = submitButton
+
+    local getKeyButton = Instance.new("TextButton")
+    getKeyButton.Size = UDim2.new(0, 120, 0, 50)
+    getKeyButton.Position = UDim2.new(0.5, -130, 0.7, 0)
+    getKeyButton.BackgroundColor3 = Color3.fromRGB(0, 100, 200) -- Blue background
+    getKeyButton.Text = "Get Key"
+    getKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- White text
+    getKeyButton.Font = Enum.Font.GothamBold
+    getKeyButton.TextSize = 24
+    getKeyButton.TextStrokeTransparency = 0.5
+    getKeyButton.Parent = frame
+
+    local getKeyButtonCorner = Instance.new("UICorner")
+    getKeyButtonCorner.CornerRadius = UDim.new(0, 12)
+    getKeyButtonCorner.Parent = getKeyButton
+
+    -- Function to update TextBox text size dynamically
+    local function updateTextSize()
+        local textBoxSize = textBox.AbsoluteSize
+        local textBoxWidth = textBoxSize.X
+        local textBoxHeight = textBoxSize.Y
+
+        local maxTextSize = 24 -- Starting point for text size
+        while maxTextSize > 0 do
+            textBox.TextSize = maxTextSize
+            if textBox.TextFits then
+                break
+            end
+            maxTextSize = maxTextSize - 1
+        end
+    end
+
+    -- Call updateTextSize on GUI load
+    updateTextSize()
+
+    submitButton.MouseButton1Click:Connect(function()
+        local key = textBox.Text
+        if key == "A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6Q7r8S9t0U" then
+            screenGui:Destroy()  -- Remove key entry GUI
+            createNotifier("Access Granted!")  -- Show the notifier GUI
+            createMainGUI()      -- Show the main GUI
+        else
+            createNotifier("Incorrect key.")  -- Show the notifier GUI with error message
+        end
+    end)
+
+    getKeyButton.MouseButton1Click:Connect(function()
+        -- Replace with your actual key retrieval link or method
+        local keyLink = "https://discord.com/invite/qjUQxDYs6C" 
+        setclipboard(keyLink)
+        createNotifier("Key link copied to clipboard!")
+    end)
+end
+
+-- Call the function to show the key entry GUI
+createKeyEntryGUI()
+
+print("Get the key from our Discord server!")
