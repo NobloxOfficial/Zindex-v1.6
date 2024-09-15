@@ -9,7 +9,8 @@ local function createNotifier(message)
     frame.Position = UDim2.new(1, -260, 1, -85)
     frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     frame.BorderSizePixel = 2
-    frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    frame.BorderColor3 = Color3.fromRGB(255, 255, 255) -- White border
+    frame.BackgroundTransparency = 0.3 -- Make frame slightly transparent
     frame.Parent = screenGui
 
     local frameCorner = Instance.new("UICorner")
@@ -23,14 +24,19 @@ local function createNotifier(message)
     }
     frameGradient.Parent = frame
 
+    local frameStroke = Instance.new("UIStroke")
+    frameStroke.Color = Color3.fromRGB(255, 255, 255) -- White stroke
+    frameStroke.Thickness = 2
+    frameStroke.Parent = frame
+
     local label = Instance.new("TextLabel")
     label.Size = UDim2.new(1, -40, 0, 50)
     label.Position = UDim2.new(0, 20, 0, 20)
     label.BackgroundTransparency = 1
     label.Text = message
-    label.TextColor3 = Color3.fromRGB(0, 255, 0)
+    label.TextColor3 = Color3.fromRGB(128, 0, 128)  -- Purple text color
     label.Font = Enum.Font.GothamBold
-    label.TextSize = 18
+    label.TextScaled = true  -- Set TextScaled to true
     label.TextWrapped = true
     label.Parent = frame
 
@@ -39,7 +45,7 @@ local function createNotifier(message)
     end)
 end
 
--- Function to create the main GUI
+-- Function to create the main GUI with smooth dragging
 local function createMainGUI()
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "REHub"
@@ -50,9 +56,9 @@ local function createMainGUI()
     frame.Position = UDim2.new(0.5, -350, 0.5, -250)
     frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     frame.BorderSizePixel = 2
-    frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    frame.Active = true
-    frame.Draggable = true
+    frame.BorderColor3 = Color3.fromRGB(255, 255, 255) -- White border
+    frame.BackgroundTransparency = 0.3 -- Make frame slightly transparent
+    frame.Visible = false -- Start with the frame hidden
     frame.Parent = screenGui
 
     local frameCorner = Instance.new("UICorner")
@@ -66,6 +72,11 @@ local function createMainGUI()
     }
     frameGradient.Parent = frame
 
+    local frameStroke = Instance.new("UIStroke")
+    frameStroke.Color = Color3.fromRGB(255, 255, 255) -- White stroke
+    frameStroke.Thickness = 2
+    frameStroke.Parent = frame
+
     local scrollingFrame = Instance.new("ScrollingFrame")
     scrollingFrame.Size = UDim2.new(1, 0, 1, -60)
     scrollingFrame.Position = UDim2.new(0, 0, 0, 60)
@@ -73,7 +84,8 @@ local function createMainGUI()
     scrollingFrame.ScrollBarThickness = 10
     scrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     scrollingFrame.BorderSizePixel = 2
-    scrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    scrollingFrame.BorderColor3 = Color3.fromRGB(255, 255, 255) -- White border
+    scrollingFrame.BackgroundTransparency = 0.3 -- Make scrolling frame slightly transparent
     scrollingFrame.Parent = frame
 
     local scrollingFrameCorner = Instance.new("UICorner")
@@ -85,11 +97,11 @@ local function createMainGUI()
     label.Position = UDim2.new(0, 0, 0, 0)
     label.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     label.BorderSizePixel = 2
-    label.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    label.Text = "Drko Gui V1.6.5  |  https://youtube.com/@RobloxExecuted"
-    label.TextColor3 = Color3.fromRGB(0, 255, 0)
+    label.BorderColor3 = Color3.fromRGB(255, 255, 255) -- White border
+    label.Text = "Drko Gui V2.0.0     https://youtube.com/@RobloxExecuted"
+    label.TextColor3 = Color3.fromRGB(128, 0, 128)  -- Purple text color
     label.Font = Enum.Font.GothamBold
-    label.TextSize = 28
+    label.TextScaled = true  -- Set TextScaled to true
     label.Parent = frame
 
     local labelCorner = Instance.new("UICorner")
@@ -102,11 +114,12 @@ local function createMainGUI()
         button.Position = UDim2.new(0, 10, 0, position)
         button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
         button.BorderSizePixel = 2
-        button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        button.BorderColor3 = Color3.fromRGB(255, 255, 255) -- White border
         button.Text = name
-        button.TextColor3 = Color3.fromRGB(0, 255, 0)
+        button.TextColor3 = Color3.fromRGB(128, 0, 128)  -- Purple text color
         button.Font = Enum.Font.Gotham
         button.TextSize = 22
+        button.BackgroundTransparency = 0.3 -- Make button slightly transparent
         button.MouseButton1Click:Connect(function()
             loadstring(game:HttpGet(script))()
         end)
@@ -130,49 +143,81 @@ local function createMainGUI()
     createButton("Pressure", 610, "https://raw.githubusercontent.com/NobloxOfficial/PRESSURE-Roblox/refs/heads/main/Pressure%20script%20for%20Z%20I%20N%20D%20E%20X")
     createButton("Jailbreak ProjectAuto V5", 670, "http://scripts.projectauto.xyz/AutoRobV5")
     createButton("Lunara Jailbreak AutoRob", 730, "https://cdn.luarmor.net/verified/lunaralite_free.lua")
-    
+
     scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 900)
 
     local TweenService = game:GetService("TweenService")
+    local UIS = game:GetService("UserInputService")
+
+    local dragging = false
+    local dragStart, startPos
+
+    local function update(dt)
+        if dragging then
+            local mousePos = UIS:GetMouseLocation()
+            local delta = mousePos - dragStart
+            frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end
+
+    frame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = UIS:GetMouseLocation()
+            startPos = frame.Position
+            UIS.InputChanged:Connect(update)
+        end
+    end)
+
+    frame.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
 
     local function animateFrameVisibility(show)
+        local TweenService = game:GetService("TweenService")
         local tweenInfo = TweenInfo.new(
-            0.5,
-            Enum.EasingStyle.Quad,
-            Enum.EasingDirection.InOut,
-            0,
-            false,
-            0
+            0.5,  -- Time
+            Enum.EasingStyle.Quad,  -- EasingStyle
+            Enum.EasingDirection.Out,  -- EasingDirection
+            0,  -- Times to repeat
+            false,  -- Reverses
+            0  -- Delay time
         )
 
-        local goalPosition = show and UDim2.new(0.5, -350, 0.5, -250) or UDim2.new(0.5, -350, 0.5, 500)
-        local goalSize = show and UDim2.new(0, 700, 0, 500) or UDim2.new(0, 700, 0, 0)
+        local goal = {}
+        if show then
+            goal.BackgroundTransparency = 0.3
+            frame.BackgroundTransparency = 0
+            frame.Position = UDim2.new(0.5, -350, 0.5, -250)
+        else
+            goal.BackgroundTransparency = 1
+            frame.BackgroundTransparency = 1
+            frame.Position = UDim2.new(1, -350, 0.5, -250)
+        end
 
-        local tween = TweenService:Create(frame, tweenInfo, {Position = goalPosition, Size = goalSize})
+        local tween = TweenService:Create(frame, tweenInfo, goal)
         tween:Play()
-        tween.Completed:Connect(function()
-            if not show then
-                frame.Visible = false
-            end
-        end)
     end
 
     local function toggleVisibility()
         if frame.Visible then
             animateFrameVisibility(false)
+            frame.Visible = false
         else
             frame.Visible = true
             animateFrameVisibility(true)
         end
     end
 
-    -- Create toggle button outside the main frame
+    -- Add the toggle button outside the main frame
     local toggleButton = Instance.new("TextButton")
     toggleButton.Size = UDim2.new(0, 150, 0, 50)
     toggleButton.Position = UDim2.new(1, -160, 0.5, -25)  -- Adjust position to be outside of the frame
     toggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
     toggleButton.Text = "Toggle GUI"
-    toggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+    toggleButton.TextColor3 = Color3.fromRGB(128, 0, 128)  -- Purple text color
     toggleButton.Font = Enum.Font.GothamBold
     toggleButton.TextSize = 24
     toggleButton.Parent = screenGui  -- Parent to ScreenGui, not frame
@@ -286,10 +331,10 @@ local function createKeyEntryGUI()
         local key = textBox.Text
         if key == "A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6Q7r8S9t0U" then
             screenGui:Destroy()  -- Remove key entry GUI
-            createNotifier("Access Granted!")  -- Show the notifier GUI
+            createNotifier("Script Loaded...")  -- Show the notifier GUI
             createMainGUI()      -- Show the main GUI
         else
-            createNotifier("Incorrect key.")  -- Show the notifier GUI with error message
+            createNotifier("Incorrect Key!")  -- Show the notifier GUI with error message
         end
     end)
 
